@@ -1,0 +1,31 @@
+services:
+  juplab:
+    # image: gcr.io/kaggle-gpu-images/python
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kaggle-lab
+    tty: true
+    stdin_open: true
+    # entrypoint: /bin/sh
+    ports: 
+      - "${HOST_PORT:-8888}:8888"
+    runtime: "${GPU_RUNTIME:-nvidia}"
+    volumes:
+      - "${HOST_VOLUME:-../proj-volume}:${BOX_VOLUME:-/proj-volume}"
+    # ipc: "host"
+    # shm_size: 60gb
+    # ulimits:
+    #   memlock: -1
+    #   stack: 67108864
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           capabilities: ["gpu"]
+    env_file:
+      - ../.env
+      - path: ../.env
+        required: true # default
+    # command: jupyter notebook --no-browser --port=8888
