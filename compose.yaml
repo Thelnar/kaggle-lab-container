@@ -12,7 +12,7 @@ services:
       - "${HOST_PORT:-8888}:8888"
     runtime: "${GPU_RUNTIME:-nvidia}"
     volumes:
-      - "${HOST_VOLUME:-../proj-volume}:${BOX_VOLUME:-/proj-volume}"
+      - "${HOST_VOLUME:-../}:${BOX_VOLUME:-/proj-volume/}"
     # ipc: "host"
     # shm_size: 60gb
     # ulimits:
@@ -24,8 +24,8 @@ services:
     #       devices:
     #         - driver: nvidia
     #           capabilities: ["gpu"]
-    env_file:
-      - ../.env
-      - path: ../.env
-        required: true # default
+    environment:
+      - KAGGLE_CONFIG_DIR=${BOX_VOLUME}
+      - ZIP_FILE=${BOX_VOLUME}data/in/hms-harmful-brain-activity-classification.zip
+      - TEST_CSV=${BOX_VOLUME}data/in/dataset/test.csv
     # command: jupyter notebook --no-browser --port=8888
